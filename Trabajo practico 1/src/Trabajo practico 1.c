@@ -10,8 +10,12 @@
 
 #include <stdio.h>
 #include <stdlib.h>
+#include "funciones.h"
 
 int main(void) {
-	puts("!!!Hello World!!!"); /* prints !!!Hello World!!! */
-	return EXIT_SUCCESS;
+	int factorial;
+
+	factorial=calcularFactorial(5);
+	printf("El factorial de 5 es: %d",factorial);
+	return 0;
 }
