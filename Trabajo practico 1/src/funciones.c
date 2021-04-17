@@ -5,7 +5,7 @@
  *      Author: Tomas Dangelo
  */
 #include "funciones.h"
-int calcularFactorial(int numero)
+int calcularFactorial(float numero)
 {
 	int resultado;
 
@@ -15,6 +15,42 @@ int calcularFactorial(int numero)
 	else{
 		resultado=numero * calcularFactorial(numero-1);
 	}
+
+	return resultado;
+}
+
+float calcularSuma(float operandoA, float operandoB)
+{
+	float resultado;
+
+		resultado=operandoA+operandoB;
+
+	return resultado;
+}
+
+float calcularResta(float operandoA, float operandoB)
+{
+	float resultado;
+
+		resultado=operandoA-operandoB;
+
+	return resultado;
+}
+
+float calcularMultiplicacion(float operandoA, float operandoB)
+{
+	float resultado;
+
+		resultado=operandoA*operandoB;
+
+	return resultado;
+}
+
+float calcularDivision(float operandoA, float operandoB)
+{
+	float resultado;
+
+		resultado=operandoA/operandoB;
 
 	return resultado;
 }
