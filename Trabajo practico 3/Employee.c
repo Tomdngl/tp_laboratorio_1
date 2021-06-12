@@ -4,6 +4,7 @@
 #include "Employee.h"
 #include "LinkedList.h"
 #include "Controller.h"
+#include "menu.h"
 #include "utn.h"
 
 Employee* employee_new()
@@ -116,6 +117,7 @@ int employee_edit(LinkedList* pArrayListEmployee)
 	int i;
 	int opc;
 	int len;
+	int id;
 	int confirmarCambio = 0;
 	int confirmarSalida = 0;
 	int estado = 0;
@@ -137,10 +139,11 @@ int employee_edit(LinkedList* pArrayListEmployee)
 			{
 				this = (Employee*)ll_get(pArrayListEmployee, i);
 				*aux = *this;
-				if( auxId == this->id )
+				employee_getId(this, &id);
+				if(id==auxId)
 				{
 					do {
-						opc=employee_showEditMenu(aux);
+						opc=menu_showEditMenu(aux);
 						switch (opc){
 							case 1:
 								utn_getNombre(auxNombre, 128, "\nIngrese el nuevo nombre: ", "Error. ", 2);
@@ -164,7 +167,7 @@ int employee_edit(LinkedList* pArrayListEmployee)
 								}
 								break;
 							case 4:
-								utn_getNumero(&confirmarCambio, "¿Esta seguro de realizar los cambios?\n[1. Si] [2. No]: ", "Opcion invalida. ", 1, 2, 2);
+								utn_getNumero(&confirmarCambio, "¿Esta seguro de realizar los cambios?\n[1. Si] [2. No]: ", "Opción invalida. ", 1, 2, 2);
 								if(estado==1 && confirmarCambio==1)
 								{
 									*this = *aux;
@@ -183,7 +186,7 @@ int employee_edit(LinkedList* pArrayListEmployee)
 								break;
 
 							case 10:
-								utn_getNumero(&confirmarSalida, "\n¿Desea salir del menu de modificaciones?\n [1. Si] [2. No]: ", "Opcion incorrecta. ", 1, 2, 2);
+								utn_getNumero(&confirmarSalida, "\n¿Desea salir del menu de modificaciones?\n [1. Si] [2. No]: ", "Opción incorrecta. ", 1, 2, 2);
 								opc=0;
 								if(confirmarSalida==1)
 								{
@@ -191,7 +194,7 @@ int employee_edit(LinkedList* pArrayListEmployee)
 								}
 								break;
 							default:
-								printf("\nLa opción seleccionada es invalida.\n");
+								printf("\nLa opción seleccionada es inválida.\n");
 								break;
 						}
 					}while (opc!=10);
@@ -206,6 +209,7 @@ int employee_remove(LinkedList* pArrayListEmployee)
 	int rtn;
 	int len;
 	int i;
+	int id;
 	int auxId;
 	int confirmar;
 	Employee* this;
@@ -217,7 +221,8 @@ int employee_remove(LinkedList* pArrayListEmployee)
 			utn_getNumero(&auxId, "Inserte el id que desea remover: ", "Error, ese id no existe. ", 0, limiteId, 2);
 			for (i = 0; i < len; i++) {
 				this = (Employee*)ll_get(pArrayListEmployee, i);
-				if(this->id==auxId)
+				employee_getId(this, &id);
+				if(id==auxId)
 				{
 				utn_getNumero(&confirmar, "\n¿Seguro desea dar de baja al empleado?\n [1. Si] [2. No]: ", "Opcion incorrecta. ", 1, 2, 2);
 					if(confirmar == 1)
@@ -350,6 +355,7 @@ void employee_delete(Employee* this)
     }
 }
 
+//REEMPLAZAR CON LA SOLUCION DE ID Y ELIMINAR
 int findIdMax(LinkedList* pArrayListEmployee)
 {
 	int idMax = 0;
@@ -375,7 +381,7 @@ int employee_sort(LinkedList* pArrayListEmployee)
 	int opc;
 		if(pArrayListEmployee!=NULL)
 		{
-			opc=employee_showSortMenu();
+			opc=menu_showSortMenu();
 			switch (opc) {
 				case 1:
 					utn_getNumero(&ordenamiento, "[1.] Ascendente o [0.] Descendente: ", "Opcion invalida. ", 0, 1, 2);
@@ -513,57 +519,4 @@ int employee_list(Employee* this)
 	        rtn=1;
 	    }
 	    return rtn;
-}
-
-// MOVER MENUS A OTRA BIBLIOTECA?
-
-int employee_showMenu()
-{
-	int opc;
-    printf("\n                    ###   Menu   ###\n");
-    printf("\n\n");
-    printf("1. Cargar los datos de los empleados desde el archivo data.csv (modo texto).\n");
-    printf("2. Cargar los datos de los empleados desde el archivo data.bin (modo binario).\n");
-    printf("3. Alta de empleado\n");
-    printf("4. Modificar datos de empleado\n");
-    printf("5. Baja de empleado\n");
-    printf("6. Listar empleados\n");
-    printf("7. Ordenar empleados\n");
-    printf("8. Guardar los datos de los empleados en el archivo data.csv (modo texto).\n");
-    printf("9. Guardar los datos de los empleados en el archivo data.bin (modo binario).\n");
-    printf("10. Salir\n\n");
-	utn_getNumero(&opc, "Seleccione una opcion: ", "Error, ", 0, 10, 3);
-	return opc;
-}
-
-int employee_showEditMenu(Employee* this)
-{
-	int opc;
-    printf("\n            ###   Menu modificaciones   ###\n");
-    printf("\n\nID     NOMBRE   HORAS TRABAJADAS   SUELDO\n");
-    employee_list(this);
-    printf("\n\n");
-    printf("1. Modificar nombre del empleado.\n");
-    printf("2. Modificar horas trabajadas del empleado.\n");
-    printf("3. Modificar sueldo del empleado.\n");
-    printf("4. Confirmar modificación.\n");
-
-    printf("10. Salir\n\n");
-	utn_getNumero(&opc, "Seleccione una opcion: ", "Error, ", 1, 10, 3);
-	return opc;
-}
-
-int employee_showSortMenu()
-{
-	int opc;
-    printf("\n            ###   Menu de ordenamiento   ###\n");
-    printf("\n\n");
-    printf("1. Ordenar por Id.\n");
-    printf("2. Ordenar por nombre.\n");
-    printf("3. Ordenar por horas trabajadas.\n");
-    printf("4. Ordenar por sueldo.\n");
-
-    printf("10. Salir\n\n");
-	utn_getNumero(&opc, "Seleccione una opcion: ", "Error, ", 1, 10, 3);
-	return opc;
 }

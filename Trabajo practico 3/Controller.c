@@ -15,20 +15,20 @@
  */
 int controller_loadFromText(char* path , LinkedList* pArrayListEmployee)
 {
-	FILE *data;
+	FILE *datatxt;
 	int rtn = 0;
 
-	if(path!=NULL&&pArrayListEmployee!=NULL)
+	if(path!=NULL && pArrayListEmployee!=NULL)
 	{
-		data=fopen(path,"r");
-		if(data!=NULL && parser_EmployeeFromText(data, pArrayListEmployee))
+		datatxt=fopen(path,"r");
+		if(datatxt!=NULL && parser_EmployeeFromText(datatxt, pArrayListEmployee))
 		{
 			printf("\nDatos cargados exitosamente\n");
 			rtn = 1;
 		}
 	}
 
-	fclose(data);
+	fclose(datatxt);
 
     return rtn;
 }
@@ -42,7 +42,20 @@ int controller_loadFromText(char* path , LinkedList* pArrayListEmployee)
  */
 int controller_loadFromBinary(char* path , LinkedList* pArrayListEmployee)
 {
-    return 1;
+	FILE *databin;
+	int rtn = 0;
+
+	if(path!=NULL && pArrayListEmployee!=NULL)
+		{
+		 databin = fopen(path, "rb");
+		 if(databin!=NULL && parser_EmployeeFromBinary(databin, pArrayListEmployee))
+		 	 {
+			 printf("\nDatos cargados exitosamente\n");
+			 rtn = 1;
+		 	 }
+		}
+
+    return rtn;
 }
 
 /** \brief Alta de empleados
@@ -188,7 +201,43 @@ int controller_sortEmployee(LinkedList* pArrayListEmployee)
  */
 int controller_saveAsText(char* path , LinkedList* pArrayListEmployee)
 {
-    return 1;
+	int rtn = 1;
+
+	FILE *datatxt;
+	int auxId;
+	char auxNombre[128];
+	int auxHoras;
+	int auxSueldo;
+
+	int i;
+	int len = ll_len(pArrayListEmployee);
+
+	Employee* this;
+
+	if(pArrayListEmployee!=NULL && path!=NULL)
+	{
+		datatxt = fopen(path, "w");
+		if(datatxt!=NULL)
+		{
+			fprintf(datatxt,"%s,%s,%s,%s\n", "id", "nombre", "horasTrabajadas", "sueldo");
+			for(i = 0; i < len ; i++)
+			{
+				this = ll_get(pArrayListEmployee, i);
+				if(employee_getId(this, &auxId) &&
+				   employee_getNombre(this, auxNombre) &&
+				   employee_getHorasTrabajadas(this, &auxHoras) &&
+				   employee_getSueldo(this, &auxSueldo))
+				{
+					fprintf(datatxt,"%d,%s,%d,%d\n", auxId, auxNombre, auxHoras, auxSueldo);
+				}
+			}
+		}
+		rtn = 0;
+		fclose(datatxt);
+		printf("\nArchivo guardado exitosamente.\n");
+	}
+
+    return rtn;
 }
 
 /** \brief Guarda los datos de los empleados en el archivo data.csv (modo binario).
@@ -200,6 +249,27 @@ int controller_saveAsText(char* path , LinkedList* pArrayListEmployee)
  */
 int controller_saveAsBinary(char* path , LinkedList* pArrayListEmployee)
 {
-    return 1;
+	int rtn = 1;
+	int i;
+	int len = ll_len(pArrayListEmployee);
+
+	FILE *databin;
+
+	Employee* this;
+
+	if(pArrayListEmployee != NULL && path != NULL)
+	{
+		databin = fopen(path, "wb");
+		for (i = 0; i < len; ++i)
+		{
+			this = (Employee*) ll_get(pArrayListEmployee, i);
+			fwrite(this, sizeof(Employee), 1, databin);
+		}
+		rtn = 0;
+		fclose(databin);
+		printf("\nArchivo guardado exitosamente.\n");
+	}
+
+    return rtn;
 }
 

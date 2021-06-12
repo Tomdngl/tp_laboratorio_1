@@ -39,7 +39,4 @@ int employee_sortByHours(void* firstEmployee, void* secondEmployee);
 int employee_sortBySalary(void* firstEmployee, void* secondEmployee);
 
 int employee_list(Employee* this);
-int employee_showMenu();
-int employee_showSortMenu();
-int employee_showEditMenu();
 #endif // employee_H_INCLUDED

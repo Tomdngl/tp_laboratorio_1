@@ -3,6 +3,7 @@
 #include "LinkedList.h"
 #include "Controller.h"
 #include "Employee.h"
+#include "menu.h"
 
 /****************************************************
     Menu:
@@ -27,11 +28,12 @@ int main()
 	LinkedList* listaEmpleados = ll_newLinkedList();
 
 	do{
-		opc=employee_showMenu();
+		opc=menu_showMenu();
 
 		switch(opc)
 			{
 			case 1:
+				//Desarrollar pregunta de si queremos pisar los datos existentes al cargar una lista si ya hay datos cargados.
 				if(ll_isEmpty(listaEmpleados))
 				{
 				controller_loadFromText("data.csv",listaEmpleados);
@@ -43,7 +45,7 @@ int main()
 			break;
 
 			case 2:
-				//A desarrollar controller from Binary. Solo se puede ingresar una vez que se guardo el csv text en binario. (Si no existe binario no carga nada)
+				controller_loadFromBinary("data.bin", listaEmpleados);
 			break;
 
 			case 3:
@@ -88,7 +90,6 @@ int main()
 					printf("\nDebe cargar a los empleados antes de listarlos.\n\n");
 				}
 			break;
-			//EN DESARROLLO
 			case 7:
 				if(!(ll_isEmpty(listaEmpleados)))
 				{
@@ -97,6 +98,26 @@ int main()
 				else
 				{
 					printf("\nDebe cargar a los empleados antes de ordenarlos.\n\n");
+				}
+				break;
+			case 8:
+				if(!(ll_isEmpty(listaEmpleados)))
+				{
+				controller_saveAsText("data.csv", listaEmpleados);
+				}
+				else
+				{
+					printf("\nNo hay empleados para guardar.\n\n");
+				}
+				break;
+			case 9:
+				if(!(ll_isEmpty(listaEmpleados)))
+				{
+				controller_saveAsBinary("data.bin", listaEmpleados);
+				}
+				else
+				{
+					printf("\nNo hay empleados para guardar.\n\n");
 				}
 				break;
 			}
