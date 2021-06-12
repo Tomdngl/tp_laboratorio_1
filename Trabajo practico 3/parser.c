@@ -18,10 +18,10 @@ int parser_EmployeeFromText(FILE* pFile , LinkedList* pArrayListEmployee)
 {
 	int rtn = 0;
 	//Orden de los char: id , nombre, horasTrabajadas, sueldo
-	char a[LNG_C_PARSER];
-	char b[LNG_C_PARSER];
-	char c[LNG_C_PARSER];
-	char d[LNG_C_PARSER];
+	char id[LNG_C_PARSER];
+	char nombre[LNG_C_PARSER];
+	char horasTrabajadas[LNG_C_PARSER];
+	char sueldo[LNG_C_PARSER];
 	int lecturas;
 	int inicio = 1;
 	Employee* aux = NULL;
@@ -29,11 +29,11 @@ int parser_EmployeeFromText(FILE* pFile , LinkedList* pArrayListEmployee)
 	if(pFile!=NULL && pArrayListEmployee!=NULL)
 	{
 		do{
-			lecturas = fscanf(pFile, "%[^,],%[^,],%[^,],%[^\n]\n",a,b,c,d);
+			lecturas = fscanf(pFile, "%[^,],%[^,],%[^,],%[^\n]\n",id,nombre,horasTrabajadas,sueldo);
 
-			if(lecturas==4 && strlen(a)<LNG_C_PARSER && strlen(b)<LNG_C_PARSER && strlen(c)<LNG_C_PARSER && strlen(d)<LNG_C_PARSER&&inicio!=1)
+			if(lecturas==4 && strlen(id)<LNG_C_PARSER && strlen(nombre)<LNG_C_PARSER && strlen(horasTrabajadas)<LNG_C_PARSER && strlen(sueldo)<LNG_C_PARSER&&inicio!=1)
 			{
-				aux = employee_newParametros(a,b,c,d);
+				aux = employee_newParametros(id,nombre,horasTrabajadas,sueldo);
 				if(aux != NULL)
 				{
 					ll_add(pArrayListEmployee, aux);

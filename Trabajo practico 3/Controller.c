@@ -55,13 +55,21 @@ int controller_loadFromBinary(char* path , LinkedList* pArrayListEmployee)
 int controller_addEmployee(LinkedList* pArrayListEmployee)
 {
 	int rtn;
-	if(employee_add(pArrayListEmployee))
+	rtn=employee_add(pArrayListEmployee);
+	if(1)
 	{
-	rtn=1;
+		printf("\nAlta realizada con exito.\n");
+		rtn = 1;
+	}
+	else if(-1)
+	{
+		printf("\nAlta cancelada.\n");
+		rtn = -1;
 	}
 	else
 	{
-	rtn=0;
+		printf("\nAlta cancelada.\n");
+		rtn=0;
 	}
 
     return rtn;
@@ -76,7 +84,18 @@ int controller_addEmployee(LinkedList* pArrayListEmployee)
  */
 int controller_editEmployee(LinkedList* pArrayListEmployee)
 {
-    return 1;
+
+	int rtn;
+	if(employee_edit(pArrayListEmployee))
+	{
+	rtn=1;
+	}
+	else
+	{
+	rtn=0;
+	}
+
+    return rtn;
 }
 
 /** \brief Baja de empleado
@@ -144,7 +163,20 @@ int controller_ListEmployee(LinkedList* pArrayListEmployee)
  */
 int controller_sortEmployee(LinkedList* pArrayListEmployee)
 {
-    return 1;
+	int rtn = 0;
+	if(pArrayListEmployee!=NULL)
+	{
+		if(employee_sort(pArrayListEmployee) == 0)
+		{
+			printf("Empleados ordenados exitosamente.\n");
+		}
+	}
+	else
+	{
+		printf("Error\n");
+	}
+
+    return rtn;
 }
 
 /** \brief Guarda los datos de los empleados en el archivo data.csv (modo texto).
@@ -171,21 +203,3 @@ int controller_saveAsBinary(char* path , LinkedList* pArrayListEmployee)
     return 1;
 }
 
-int controller_showMenu()
-{
-	int opc;
-    printf("\n                    ###   Menu   ###\n");
-    printf("\n\n");
-    printf("1_ Cargar los datos de los empleados desde el archivo data.csv (modo texto).\n");
-    printf("2_ Cargar los datos de los empleados desde el archivo data.bin (modo binario).\n");
-    printf("3_ Alta de empleado\n");
-    printf("4_ Modificar datos de empleado\n");
-    printf("5_ Baja de empleado\n");
-    printf("6_ Listar empleados\n");
-    printf("7_ Ordenar empleados\n");
-    printf("8_ Guardar los datos de los empleados en el archivo data.csv (modo texto).\n");
-    printf("9_ Guardar los datos de los empleados en el archivo data.bin (modo binario).\n");
-    printf("10_ Salir\n\n");
-	utn_getNumero(&opc, "Seleccione una opcion: ", "Error, ", 0, 10, 3);
-	return opc;
-}
