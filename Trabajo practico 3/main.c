@@ -19,11 +19,11 @@
     10. Salir
 *****************************************************/
 
-
 int main()
 {
 	setbuf(stdout, NULL);
 	int opc;
+	int* idMax = (int*)calloc(1, sizeof(int));
 
 	LinkedList* listaEmpleados = ll_newLinkedList();
 
@@ -33,25 +33,33 @@ int main()
 		switch(opc)
 			{
 			case 1:
-				//Desarrollar pregunta de si queremos pisar los datos existentes al cargar una lista si ya hay datos cargados.
 				if(ll_isEmpty(listaEmpleados))
 				{
 				controller_loadFromText("data.csv",listaEmpleados);
+				controller_id(listaEmpleados, idMax);
 				}
 				else
 				{
-					printf("\nYa cargo la lista.\n");
+					printf("\nYa hay datos cargados.\n");
 				}
 			break;
 
 			case 2:
+				if(ll_isEmpty(listaEmpleados))
+				{
 				controller_loadFromBinary("data.bin", listaEmpleados);
+				controller_id(listaEmpleados, idMax);
+				}
+				else
+				{
+					printf("\nYa hay datos cargados.\n");
+				}
 			break;
 
 			case 3:
 				if(!(ll_isEmpty(listaEmpleados)))
 				{
-					controller_addEmployee(listaEmpleados);
+					controller_addEmployee(listaEmpleados, idMax);
 				}
 				else
 				{
@@ -62,7 +70,7 @@ int main()
 			case 4:
 				if(!(ll_isEmpty(listaEmpleados)))
 				{
-				controller_editEmployee(listaEmpleados);
+				controller_editEmployee(listaEmpleados, idMax);
 				}
 				else
 				{
@@ -73,7 +81,7 @@ int main()
 			case 5:
 				if(!(ll_isEmpty(listaEmpleados)))
 				{
-				 controller_removeEmployee(listaEmpleados);
+				 controller_removeEmployee(listaEmpleados, idMax);
 				}
 				else
 				{
@@ -103,7 +111,7 @@ int main()
 			case 8:
 				if(!(ll_isEmpty(listaEmpleados)))
 				{
-				controller_saveAsText("data.csv", listaEmpleados);
+				controller_saveAsText("data.csv", listaEmpleados, idMax);
 				}
 				else
 				{
@@ -113,7 +121,7 @@ int main()
 			case 9:
 				if(!(ll_isEmpty(listaEmpleados)))
 				{
-				controller_saveAsBinary("data.bin", listaEmpleados);
+				controller_saveAsBinary("data.bin", listaEmpleados, idMax);
 				}
 				else
 				{
@@ -122,6 +130,8 @@ int main()
 				break;
 			}
 		}while(opc != 10);
+
+	printf("Gracias por usar este programa.");
+	free(idMax);
 	return 0;
 }
-

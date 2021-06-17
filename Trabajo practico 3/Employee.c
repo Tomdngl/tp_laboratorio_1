@@ -6,6 +6,7 @@
 #include "Controller.h"
 #include "menu.h"
 #include "utn.h"
+#include "id.h"
 
 Employee* employee_new()
 {
@@ -66,52 +67,49 @@ int employee_inputData(char* nombre, int* horas, int* sueldo)
 
 //Add, edit and remove.
 
-//!Agregar verificacion y delete en caso de error.
-int employee_add(LinkedList* pArrayListEmployee)
+int employee_add(LinkedList* pArrayListEmployee, int* idMax)
 {
 	int rtn=0;
 	int confirmarCambio;
 	int auxSueldo;
-	int auxId;
+	int* auxId;
 	int auxHoras;
 	char auxNombre[128];
 	Employee* this;
 
 	if(pArrayListEmployee!=NULL)
 	{
-		//CAMBIAR ESTO CON LA SOLUCION DE ID.
-		auxId=findIdMax(pArrayListEmployee);
+		auxId = id_add(idMax);
 		if(employee_inputData(auxNombre, &auxHoras, &auxSueldo)==1)
 		{
-			if(utn_getNumero(&confirmarCambio, "¿Esta seguro de realizar el alta?\n[1. Si] [2. No]: ", "Opcion invalida. ", 1, 2, 2) == 0 &&
-				confirmarCambio==1)
+			utn_getNumero(&confirmarCambio, "¿Esta seguro de realizar el alta?\n[1. Si] [2. No]: ", "Opcion invalida. ", 1, 2, 2);
+			if(confirmarCambio==1)
 			{
 				this = employee_new();
-
 				if(this!=NULL)
 				{
-					if(employee_setConfirm(this, auxId, auxNombre, auxHoras, auxSueldo)==0)
-					 {
-						ll_add(pArrayListEmployee,this);
-						rtn = 1;
-					}
+					employee_setConfirm(this, *auxId, auxNombre, auxHoras, auxSueldo);
+					ll_add(pArrayListEmployee,this);
+					rtn = 1;
 				}
-					else
-					{
-						employee_delete(this);
-						rtn = -1;
-					}
+				else
+				{
+					id_remove(idMax);
+					employee_delete(this);
+					rtn = 0;
+				}
 			}
-		}
-		else
-		{
-			rtn = -1;
+			else
+			{
+				id_remove(idMax);
+				rtn = 0;
+			}
 		}
 	}
 	    return rtn;
 }
 
-int employee_edit(LinkedList* pArrayListEmployee)
+int employee_edit(LinkedList* pArrayListEmployee, int* idMax)
 {
 	int rtn = 0;
 	int i;
@@ -121,7 +119,7 @@ int employee_edit(LinkedList* pArrayListEmployee)
 	int confirmarCambio = 0;
 	int confirmarSalida = 0;
 	int estado = 0;
-	int limiteId=findIdMax(pArrayListEmployee);
+	int limiteId = id_getMax(idMax);
 	Employee* this;
 	Employee* aux = employee_new();
 
@@ -204,7 +202,7 @@ int employee_edit(LinkedList* pArrayListEmployee)
 	return rtn;
 }
 
-int employee_remove(LinkedList* pArrayListEmployee)
+int employee_remove(LinkedList* pArrayListEmployee, int* idMax)
 {
 	int rtn;
 	int len;
@@ -213,17 +211,20 @@ int employee_remove(LinkedList* pArrayListEmployee)
 	int auxId;
 	int confirmar;
 	Employee* this;
-	int limiteId=findIdMax(pArrayListEmployee);
+	int limiteId = id_getMax(idMax);
 
 		if(pArrayListEmployee!=NULL)
 		{
 			len = ll_len(pArrayListEmployee);
+			controller_ListEmployee(pArrayListEmployee);
 			utn_getNumero(&auxId, "Inserte el id que desea remover: ", "Error, ese id no existe. ", 0, limiteId, 2);
 			for (i = 0; i < len; i++) {
 				this = (Employee*)ll_get(pArrayListEmployee, i);
 				employee_getId(this, &id);
 				if(id==auxId)
 				{
+				printf("\n\nID     NOMBRE   HORAS TRABAJADAS   SUELDO\n");
+				employee_list(this);
 				utn_getNumero(&confirmar, "\n¿Seguro desea dar de baja al empleado?\n [1. Si] [2. No]: ", "Opcion incorrecta. ", 1, 2, 2);
 					if(confirmar == 1)
 					{
@@ -353,25 +354,6 @@ void employee_delete(Employee* this)
         free(this);
         this=NULL;
     }
-}
-
-//REEMPLAZAR CON LA SOLUCION DE ID Y ELIMINAR
-int findIdMax(LinkedList* pArrayListEmployee)
-{
-	int idMax = 0;
-	Employee* aux;
-	int i;
-	int len = ll_len(pArrayListEmployee);
-
-      for(i=0; i<len; i++)
-      {
-          aux = ll_get(pArrayListEmployee,i);
-          if(idMax<aux->id || idMax == 0)
-          {
-              idMax = aux->id;
-          }
-      }
-      return idMax + 1;
 }
 
 int employee_sort(LinkedList* pArrayListEmployee)
@@ -520,3 +502,5 @@ int employee_list(Employee* this)
 	    }
 	    return rtn;
 }
+
+

@@ -17,11 +17,11 @@ int employee_setId(Employee* this,int id);
 int employee_getId(Employee* this,int* id);
 int employee_setConfirm(Employee* this, int id, char* nombre, int horas, int sueldo);
 int employee_inputData(char* nombre, int* horas, int* sueldo);
-int findIdMax(LinkedList* pArrayListEmployee);
 
-int employee_add(LinkedList* pArrayListEmployee);
-int employee_remove(LinkedList* pArrayListEmployee);
-int employee_edit(LinkedList* pArrayListEmployee);
+int employee_add(LinkedList* pArrayListEmployee, int* idMax);
+int employee_remove(LinkedList* pArrayListEmployee, int* idMax);
+int employee_edit(LinkedList* pArrayListEmployee, int* idMax);
+int employee_list(Employee* this);
 
 int employee_setNombre(Employee* this,char* nombre);
 int employee_getNombre(Employee* this,char* nombre);
@@ -38,5 +38,4 @@ int employee_sortByName(void* firstEmployee, void* secondEmployee);
 int employee_sortByHours(void* firstEmployee, void* secondEmployee);
 int employee_sortBySalary(void* firstEmployee, void* secondEmployee);
 
-int employee_list(Employee* this);
 #endif // employee_H_INCLUDED

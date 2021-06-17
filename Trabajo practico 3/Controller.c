@@ -4,7 +4,38 @@
 #include "Employee.h"
 #include "parser.h"
 #include "utn.h"
+#include "id.h"
 
+int controller_id(LinkedList* pArrayListEmployee, int* idMax)
+{
+	int rtn = 1;
+	int i;
+	int len = ll_len(pArrayListEmployee);
+
+	FILE *lastId;
+	Employee* this;
+
+	lastId = fopen("lastId.csv", "r");
+
+	if(lastId!=NULL && pArrayListEmployee!=NULL)
+	{
+		parser_Id(lastId, idMax);
+	}
+	else
+	{
+		lastId = fopen("lastId.csv", "w");
+		for(i=0; i<len; i++)
+		{
+			this = ll_get(pArrayListEmployee,i);
+		}
+		employee_getId(this, idMax);
+		fprintf(lastId,"%d", *idMax);
+		rtn = 0;
+	}
+	fclose(lastId);
+
+	return rtn;
+}
 
 /** \brief Carga los datos de los empleados desde el archivo data.csv (modo texto).
  *
@@ -27,11 +58,11 @@ int controller_loadFromText(char* path , LinkedList* pArrayListEmployee)
 			rtn = 1;
 		}
 	}
-
 	fclose(datatxt);
 
     return rtn;
 }
+
 
 /** \brief Carga los datos de los empleados desde el archivo data.csv (modo binario).
  *
@@ -65,26 +96,19 @@ int controller_loadFromBinary(char* path , LinkedList* pArrayListEmployee)
  * \return int
  *
  */
-int controller_addEmployee(LinkedList* pArrayListEmployee)
+int controller_addEmployee(LinkedList* pArrayListEmployee, int* idMax)
 {
 	int rtn;
-	rtn=employee_add(pArrayListEmployee);
-	if(1)
+	if(employee_add(pArrayListEmployee, idMax)==1)
 	{
 		printf("\nAlta realizada con exito.\n");
 		rtn = 1;
-	}
-	else if(-1)
-	{
-		printf("\nAlta cancelada.\n");
-		rtn = -1;
 	}
 	else
 	{
 		printf("\nAlta cancelada.\n");
 		rtn=0;
 	}
-
     return rtn;
 	}
 
@@ -95,11 +119,10 @@ int controller_addEmployee(LinkedList* pArrayListEmployee)
  * \return int
  *
  */
-int controller_editEmployee(LinkedList* pArrayListEmployee)
+int controller_editEmployee(LinkedList* pArrayListEmployee, int* idMax)
 {
-
 	int rtn;
-	if(employee_edit(pArrayListEmployee))
+	if(employee_edit(pArrayListEmployee, idMax))
 	{
 	rtn=1;
 	}
@@ -118,10 +141,10 @@ int controller_editEmployee(LinkedList* pArrayListEmployee)
  * \return int
  *
  */
-int controller_removeEmployee(LinkedList* pArrayListEmployee)
+int controller_removeEmployee(LinkedList* pArrayListEmployee, int* idMax)
 {
 	int rtn;
-	if(employee_remove(pArrayListEmployee))
+	if(employee_remove(pArrayListEmployee, idMax))
 	{
 	rtn=1;
 	}
@@ -199,7 +222,7 @@ int controller_sortEmployee(LinkedList* pArrayListEmployee)
  * \return int
  *
  */
-int controller_saveAsText(char* path , LinkedList* pArrayListEmployee)
+int controller_saveAsText(char* path , LinkedList* pArrayListEmployee, int* idMax)
 {
 	int rtn = 1;
 
@@ -234,6 +257,7 @@ int controller_saveAsText(char* path , LinkedList* pArrayListEmployee)
 		}
 		rtn = 0;
 		fclose(datatxt);
+		id_save(idMax);
 		printf("\nArchivo guardado exitosamente.\n");
 	}
 
@@ -247,7 +271,7 @@ int controller_saveAsText(char* path , LinkedList* pArrayListEmployee)
  * \return int
  *
  */
-int controller_saveAsBinary(char* path , LinkedList* pArrayListEmployee)
+int controller_saveAsBinary(char* path , LinkedList* pArrayListEmployee, int* idMax)
 {
 	int rtn = 1;
 	int i;
@@ -267,8 +291,10 @@ int controller_saveAsBinary(char* path , LinkedList* pArrayListEmployee)
 		}
 		rtn = 0;
 		fclose(databin);
+		id_save(idMax);
 		printf("\nArchivo guardado exitosamente.\n");
 	}
+
 
     return rtn;
 }

@@ -65,7 +65,6 @@ int parser_EmployeeFromText(FILE* data , LinkedList* pArrayListEmployee)
 int parser_EmployeeFromBinary(FILE* data , LinkedList* pArrayListEmployee)
 {
 	int rtn = 0;
-	int inicio = 1;
 	Employee* this = NULL;
 
 	if(data != NULL && pArrayListEmployee != NULL)
@@ -81,4 +80,18 @@ int parser_EmployeeFromBinary(FILE* data , LinkedList* pArrayListEmployee)
 		} while (!feof(data));
 	}
     return rtn;
+}
+
+int parser_Id(FILE* pFile, int* idMax)
+{
+	int rtn = 0;
+	char idStr[5];
+
+	if(fscanf(pFile, "%[^,]",idStr))
+	{
+		rtn = 1;
+		*idMax = atoi(idStr);
+	}
+
+	return rtn;
 }
