@@ -6,6 +6,13 @@
 #include "utn.h"
 #include "id.h"
 
+/**
+ * @brief Abre o crea dependiendo el caso un archivo que maneja los id de los empleados.
+ *
+ * @param pArrayListEmployee LinkedList*
+ * @param idMax int*
+ * @return (0) en caso de exito (1) en caso de error.
+ */
 int controller_id(LinkedList* pArrayListEmployee, int* idMax)
 {
 	int rtn = 1;

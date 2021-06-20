@@ -17,7 +17,6 @@
 int parser_EmployeeFromText(FILE* data , LinkedList* pArrayListEmployee)
 {
 	int rtn = 0;
-	//Orden de los char: id , nombre, horasTrabajadas, sueldo
 	char id[LNG_C_PARSER];
 	char nombre[LNG_C_PARSER];
 	char horasTrabajadas[LNG_C_PARSER];
@@ -82,6 +81,13 @@ int parser_EmployeeFromBinary(FILE* data , LinkedList* pArrayListEmployee)
     return rtn;
 }
 
+/**
+ * @brief Parsea el ultimo id desde id.csv
+ *
+ * @param pFile char*
+ * @param idMax int*
+ * @return
+ */
 int parser_Id(FILE* pFile, int* idMax)
 {
 	int rtn = 0;

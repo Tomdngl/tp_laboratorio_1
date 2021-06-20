@@ -8,6 +8,11 @@
 #include "utn.h"
 #include "id.h"
 
+/**
+ * @brief Constructor para un empleado
+ *
+ * @return Puntero al nuevo empleado en caso de exito o NULL si no pudo asignar espacio en memoria
+ */
 Employee* employee_new()
 {
 	Employee* nuevoEmpleado = NULL;
@@ -17,6 +22,15 @@ Employee* employee_new()
 	return nuevoEmpleado;
 }
 
+/**
+ * @brief Asigna datos a un nuevo empleado.
+ *
+ * @param idStr char*
+ * @param nombreStr char*
+ * @param horasTrabajadasStr char*
+ * @param sueldoStr char*
+ * @return Puntero al nuevo empleado en caso de exito o NULL si  no pudo asignar espacio en memoria
+ */
 Employee* employee_newParametros(char* idStr,char* nombreStr,char* horasTrabajadasStr, char* sueldoStr)
 {
 	Employee* this = employee_new();
@@ -37,6 +51,16 @@ Employee* employee_newParametros(char* idStr,char* nombreStr,char* horasTrabajad
 	return this;
 }
 
+/**
+ * @brief Verificar que todos los campos a agregar a un empleado sean correctos.
+ *
+ * @param this Employee*
+ * @param id int
+ * @param nombre char*
+ * @param horas int
+ * @param sueldo int
+ * @return (1) en caso de error y (0) en caso de exito.
+ */
 int employee_setConfirm(Employee* this, int id, char* nombre, int horas, int sueldo)
 {
 	int rtn = 1;
@@ -51,6 +75,14 @@ int employee_setConfirm(Employee* this, int id, char* nombre, int horas, int sue
 	return rtn;
 }
 
+/**
+ * @brief Solicita informacion al usuario para un empleado.
+ *
+ * @param nombre char*
+ * @param horas int*
+ * @param sueldo int*
+ * @return (0) en caso de error y (1) en caso de exito.
+ */
 int employee_inputData(char* nombre, int* horas, int* sueldo)
 {
 	int rtn = 0;
@@ -67,6 +99,13 @@ int employee_inputData(char* nombre, int* horas, int* sueldo)
 
 //Add, edit and remove.
 
+/**
+ * @brief Añade un nuevo empleado a la linked list a la vez que pide los datos para el mismo y su confirmacion.
+ *
+ * @param pArrayListEmployee LinkedList*
+ * @param idMax int*
+ * @return (1) si pudo agregar al empleado y (0) si no se agrego nada.
+ */
 int employee_add(LinkedList* pArrayListEmployee, int* idMax)
 {
 	int rtn=0;
@@ -109,6 +148,13 @@ int employee_add(LinkedList* pArrayListEmployee, int* idMax)
 	    return rtn;
 }
 
+/**
+ * @brief Modifica a un empleado existente de la linked list.
+ *
+ * @param pArrayListEmployee LinkedList*
+ * @param idMax int*
+ * @return (1) si el empleado fue modificado (0) si no se modifico ningun empleado.
+ */
 int employee_edit(LinkedList* pArrayListEmployee, int* idMax)
 {
 	int rtn = 0;
@@ -202,9 +248,16 @@ int employee_edit(LinkedList* pArrayListEmployee, int* idMax)
 	return rtn;
 }
 
+/**
+ * @brief Da de baja a un empleado de la linkedList.
+ *
+ * @param pArrayListEmployee LinkedList*
+ * @param idMax int*
+ * @return (1) si el empleado fue removido (0) si no se removio ningun empleado.
+ */
 int employee_remove(LinkedList* pArrayListEmployee, int* idMax)
 {
-	int rtn;
+	int rtn = 0;
 	int len;
 	int i;
 	int id;
@@ -246,6 +299,13 @@ int employee_remove(LinkedList* pArrayListEmployee, int* idMax)
 
 //Setters
 
+/**
+ * @brief Permite agregar un id a un empleado de la linked list.
+ *
+ * @param this Employee*
+ * @param id int
+ * @return (0) en caso de exito y (1) en caso de error.
+ */
 int employee_setId(Employee* this,int id)
 {
     int rtn=1;
@@ -258,6 +318,13 @@ int employee_setId(Employee* this,int id)
     return rtn;
 }
 
+/**
+ * @brief Permite agregar un nombre a un empleado de la linked list.
+ *
+ * @param this
+ * @param nombre
+ * @return (0) en caso de exito y (1) en caso de error.
+ */
 int employee_setNombre(Employee* this,char* nombre)
 {
     int rtn=1;
@@ -271,6 +338,13 @@ int employee_setNombre(Employee* this,char* nombre)
     return rtn;
 }
 
+/**
+ * @brief Permite agregar una cantidad de horas trabajadas a un empleado de la linked list.
+ *
+ * @param this
+ * @param horasTrabajadas
+ * @return (0) en caso de exito y (1) en caso de error.
+ */
 int employee_setHorasTrabajadas(Employee* this,int horasTrabajadas)
 {
     int rtn=1;
@@ -283,6 +357,13 @@ int employee_setHorasTrabajadas(Employee* this,int horasTrabajadas)
     return rtn;
 }
 
+/**
+ * @brief Permite agregar un sueldo a un empleado de la linked list.
+ *
+ * @param this
+ * @param sueldo
+ * @return (0) en caso de exito y (1) en caso de error.
+ */
 int employee_setSueldo(Employee* this,int sueldo)
 {
     int rtn=1;
@@ -297,6 +378,13 @@ int employee_setSueldo(Employee* this,int sueldo)
 
 //Getters
 
+/**
+ * @brief Permite obtener el id de un empleado.
+ *
+ * @param this
+ * @param id
+ * @return (0) en caso de exito y (1) en caso de error.
+ */
 int employee_getId(Employee* this,int* id)
 {
     int rtn=0;
@@ -308,7 +396,13 @@ int employee_getId(Employee* this,int* id)
     }
     return rtn;
 }
-
+/**
+ * @brief Permite obtener el nombre de un empleado.
+ *
+ * @param this
+ * @param nombre
+ * @return (0) en caso de exito y (1) en caso de error.
+ */
 int employee_getNombre(Employee* this,char* nombre)
 {
 	int rtn=0;
@@ -321,6 +415,13 @@ int employee_getNombre(Employee* this,char* nombre)
 	return rtn;
 }
 
+/**
+ * @brief Permite obtener las horas trabajadas de un empleado.
+ *
+ * @param this
+ * @param horasTrabajadas
+ * @return (0) en caso de exito y (1) en caso de error.
+ */
 int employee_getHorasTrabajadas(Employee* this,int* horasTrabajadas)
 {
 	int rtn=0;
@@ -333,6 +434,13 @@ int employee_getHorasTrabajadas(Employee* this,int* horasTrabajadas)
 	return rtn;
 }
 
+/**
+ * @brief Permite obtener el sueldo de un empleado.
+ *
+ * @param this
+ * @param sueldo
+ * @return (0) en caso de exito y (1) en caso de error.
+ */
 int employee_getSueldo(Employee* this,int* sueldo)
 {
 	int rtn=0;
@@ -347,6 +455,11 @@ int employee_getSueldo(Employee* this,int* sueldo)
 
 //Miscellaneous
 
+/**
+ * @brief Elimina el espacio en memoria de un empleado.
+ *
+ * @param this Employee*
+ */
 void employee_delete(Employee* this)
 {
     if(this!=NULL)
@@ -356,6 +469,12 @@ void employee_delete(Employee* this)
     }
 }
 
+/**
+ * @brief Permite ordenar la lista de empleado segun el criterio que se solicite.
+ *
+ * @param pArrayListEmployee
+ * @return (1) en caso de exito y (0) en caso de error.
+ */
 int employee_sort(LinkedList* pArrayListEmployee)
 {
 	int rtn = 1;
@@ -401,6 +520,13 @@ int employee_sort(LinkedList* pArrayListEmployee)
 	return rtn;
 }
 
+/**
+ * @brief Compara el Id de 2 empleados para que sean ordenados.
+ *
+ * @param firstEmployee void*
+ * @param secondEmployee void*
+ * @return (0) en caso de exito y (1) en caso de error.
+ */
 int employee_sortById(void* firstEmployee, void* secondEmployee)
 {
 	int rtn = 0;
@@ -421,6 +547,13 @@ int employee_sortById(void* firstEmployee, void* secondEmployee)
 	return rtn;
 }
 
+/**
+ * @brief Compara el nombre de 2 empleados para que sean ordenados.
+ *
+ * @param firstEmployee void*
+ * @param secondEmployee void*
+ * @return (0) en caso de exito y (1) en caso de error.
+ */
 int employee_sortByName(void* firstEmployee, void* secondEmployee)
 {
 	int rtn = 0;
@@ -442,6 +575,13 @@ int employee_sortByName(void* firstEmployee, void* secondEmployee)
 	return rtn;
 }
 
+/**
+ * @brief Compara las horas trabajadas de 2 empleados para que sean ordenados.
+ *
+ * @param firstEmployee void*
+ * @param secondEmployee void*
+ * @return (0) en caso de exito y (1) en caso de error.
+ */
 int employee_sortByHours(void* firstEmployee, void* secondEmployee)
 {
 	int rtn = 0;
@@ -462,6 +602,13 @@ int employee_sortByHours(void* firstEmployee, void* secondEmployee)
 	return rtn;
 }
 
+/**
+ * @brief Compara el salario de 2 empleados para que sean ordenados.
+ *
+ * @param firstEmployee
+ * @param secondEmployee
+ * @return (0) en caso de exito y (1) en caso de error.
+ */
 int employee_sortBySalary(void* firstEmployee, void* secondEmployee)
 {
 
@@ -483,6 +630,12 @@ int employee_sortBySalary(void* firstEmployee, void* secondEmployee)
 	return rtn;
 }
 
+/**
+ * @brief Muestra a un empleado de la lista.
+ *
+ * @param this
+ * @return (1) en caso de exito y (0) en caso de error.
+ */
 int employee_list(Employee* this)
 {
 	    int rtn=0;
@@ -502,5 +655,3 @@ int employee_list(Employee* this)
 	    }
 	    return rtn;
 }
-
-
