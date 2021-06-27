@@ -210,7 +210,7 @@ int ll_set(LinkedList* this, int index,void* pElement)
 }
 
 
-/** \brief Elimina un elemento de la lista
+/** \brief Elimina un nodo de la lista
  *
  * \param this LinkedList* Puntero a la lista
  * \param nodeIndex int Ubicacion del elemento a eliminar
@@ -366,6 +366,14 @@ int ll_push(LinkedList* this, int index, void* pElement)
 {
     int returnAux = -1;
 
+
+    if(this != NULL && index >= 0 && index <= ll_len(this))
+    {
+    	if(addNode(this,index,pElement) == 0)
+    	{
+    		returnAux = 0;
+    	}
+    }
     return returnAux;
 }
 
@@ -381,6 +389,18 @@ int ll_push(LinkedList* this, int index, void* pElement)
 void* ll_pop(LinkedList* this,int index)
 {
     void* returnAux = NULL;
+
+    Node* NodeAux;
+
+    if(this != NULL && index >= 0 && index <= ll_len(this))
+	{
+    	NodeAux = ll_get(this, index);
+
+		if(ll_remove(this,index) == 0)
+		{
+			returnAux = NodeAux;
+		}
+   	}
 
     return returnAux;
 }
@@ -398,6 +418,18 @@ int ll_contains(LinkedList* this, void* pElement)
 {
     int returnAux = -1;
 
+    if(this != NULL)
+    {
+    		if(ll_indexOf(this, pElement) != -1)
+    		{
+    			returnAux = 1;
+    		}
+    		else
+    		{
+    			returnAux = 0;
+    		}
+    	}
+
     return returnAux;
 }
 
@@ -414,6 +446,22 @@ int ll_containsAll(LinkedList* this,LinkedList* this2)
 {
     int returnAux = -1;
 
+    void* pElement;
+
+    if(this != NULL && this2 != NULL)
+    {
+    	returnAux = 1;
+		for(int i = 0; i < ll_len(this2); i++)
+		{
+			pElement = ll_get(this2,i);
+
+			if(ll_contains(this, pElement) == 0)
+			{
+				returnAux = 0;
+				break;
+			}
+		}
+    }
     return returnAux;
 }
 
@@ -430,10 +478,20 @@ int ll_containsAll(LinkedList* this,LinkedList* this2)
 LinkedList* ll_subList(LinkedList* this,int from,int to)
 {
     LinkedList* cloneArray = NULL;
+    void* pElement = NULL;
 
+    if(this != NULL && from >= 0 && to >= 0 && from <= ll_len(this) && to <= ll_len(this))
+    {
+    	cloneArray = ll_newLinkedList();
+
+    	for(int i = from; i < to ;i++)
+		{
+			pElement = ll_get(this,i);
+			ll_add(cloneArray,pElement);
+		}
+    }
     return cloneArray;
 }
-
 
 
 /** \brief Crea y retorna una nueva lista con los elementos de la lista pasada como parametro
@@ -445,7 +503,12 @@ LinkedList* ll_subList(LinkedList* this,int from,int to)
 LinkedList* ll_clone(LinkedList* this)
 {
     LinkedList* cloneArray = NULL;
+    int to = ll_len(this);
 
+    if(this != NULL)
+    {
+    	cloneArray = ll_subList(this,0,to);
+    }
     return cloneArray;
 }
 
@@ -461,7 +524,29 @@ int ll_sort(LinkedList* this, int (*pFunc)(void* ,void*), int order)
 {
     int returnAux =-1;
 
-    return returnAux;
+    int i;
+    int j;
+    void* pElement1 = NULL;
+    void* pElement2 = NULL;
 
+    if(this != NULL && (order==1 || order==0) && pFunc!=NULL)
+    {
+    	for(i = 0; i<(ll_len(this)-1);i++)
+		{
+			for(j = i+1; j < (ll_len(this));j++)
+			{
+				pElement1 = ll_get(this,i);
+				pElement2 = ll_get(this,j);
+
+				if((pFunc(pElement1, pElement2) > 0 && order == 1) || (pFunc(pElement1, pElement2) < 0 && order == 0))
+				{
+					ll_set(this, i, pElement2);
+					ll_set(this, j, pElement1);
+				}
+			}
+		}
+    	returnAux = 0;
+    }
+    return returnAux;
 }
 
